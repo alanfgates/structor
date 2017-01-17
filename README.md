@@ -124,7 +124,7 @@ in /etc/hosts:
 ### Connecting a JDBC client to HiveServer2 
 HiveServer2 is operating on the default thrift port (10000) on the nn machine speaking thrift
 binary protocol.  Starting beeline on your laptop and doing `!connect jdbc:hive2://slave1.example.com:10000` 
-will enable you to connect to the system.
+will enable you to connect to the system.  In the non-secure case the username is 'vagrant' and the password should be empty.
 
 ### Set up Kerberos (for security)
 
