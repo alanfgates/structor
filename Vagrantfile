@@ -112,6 +112,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end
 
+  config.vm.provider "docker" do |d|
+    d.build_dir = "."
+  end
+
   profile[:nodes].each do |node|
     config.vm.define node[:hostname] do |node_config|
       node_config.vm.hostname = node[:hostname] + "." + profile[:domain]
