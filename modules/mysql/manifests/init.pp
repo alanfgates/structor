@@ -13,8 +13,34 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-class hive_db {
-  if $hive_ms_rdbms == "mysql" {
-    require mysql
+class mysql {
+  $path = "/bin:/usr/bin"
+
+  package { 'mysql-server':
+    ensure => installed,
+  }
+  ->
+  service { 'mysqld':
+    ensure => running,
+    enable => true,
+  }
+  ->
+  exec { "secure-mysqld":
+    command => "mysql_secure_installation < /vagrant/modules/mysql/files/secure-mysql.txt",
+    path => "${path}",
+    cwd => "/tmp",
+    onlyif => "mysql -u root -e ';'",
+  }
+  ->
+  exec { "add-remote-root":
+    command => "/vagrant/modules/mysql/files/add-remote-root.sh",
+    path => $path,
+  }
+  ->
+  exec { "create-hivedb":
+    command => "mysql -u root --password=vagrant < files/setup-hive.txt",
+    path => "${path}",
+    cwd => "/vagrant/modules/mysql",
+    creates => "/var/lib/mysql/hive",
   }
 }

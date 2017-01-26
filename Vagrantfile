@@ -71,11 +71,13 @@ default_os = "centos6"
 default_hdp_short_version = "2.5.1"
 default_ambari_version = "2.1.0"
 default_java_version = "java-1.7.0-openjdk"
+default_hive_ms_rdbms = "mysql"
 
 profile[:hdp_short_version] ||= default_hdp_short_version
 profile[:ambari_version] ||= default_ambari_version
 profile[:java_version] ||= default_java_version
 profile[:os] ||= default_os
+profile[:hive_ms_rdbms] ||= default_hive_ms_rdbms
 profile[:vm_cpus] ||= 2
 profile[:am_mem] ||= 512
 profile[:server_mem] ||= 768
@@ -154,6 +156,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	        "hdp_version_patch" => hdp_version_patch,
 
           "hive_options" => profile[:hive_options],
+          "hive_ms_rdbms" => profile[:hive_ms_rdbms],
         }
       end
     end

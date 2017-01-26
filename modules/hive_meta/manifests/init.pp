@@ -46,7 +46,7 @@ class hive_meta {
     mode => 'a+rx',
   }
   ->
-  exec { "schematool -dbType mysql -initSchema":
+  exec { "schematool -dbType ${hive_ms_rdbms} -initSchema":
     user => "hive",
     cwd => "/",
     path => "/usr/hdp/current/hive-metastore/bin:$path",

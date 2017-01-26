@@ -50,13 +50,16 @@ class hive_client {
     content => template('hive_client/hive-log4j.erb'),
   }
 
-  package { 'mysql-connector-java':
-    ensure => installed,
-  }
+  if $hive_ms_rdbms == "mysql" {
 
-  file { "/usr/hdp/${hdp_version}/hive/lib/mysql-connector-java.jar":
-    ensure => 'link',
-    target => '/usr/share/java/mysql-connector-java.jar',
-    require => Package["hive${package_version}"],
+    package { 'mysql-connector-java':
+      ensure => installed,
+    }
+
+    file { "/usr/hdp/${hdp_version}/hive/lib/mysql-connector-java.jar":
+      ensure => 'link',
+      target => '/usr/share/java/mysql-connector-java.jar',
+      require => Package["hive${package_version}"],
+    }
   }
 }
