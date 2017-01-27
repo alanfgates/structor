@@ -16,5 +16,7 @@
 class hive_db {
   if $hive_ms_rdbms == "mysql" {
     require mysql
+  } elsif $hive_ms_rdbms == "postgres" {
+    require postgres
   }
 }

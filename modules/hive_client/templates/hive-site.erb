@@ -24,6 +24,13 @@
      eval(@nodes).select {|node| node[:roles].include? 'hive-hs2'}.
        map {|node| node[:hostname]};
    @is_hs2 = @hs2s.include? @hostname;
+   if @hive_ms_rdbms == "mysql" 
+     @jdbc_driver = "com.mysql.jdbc.Driver"
+     @jdbc_url = "jdbc:mysql://@db:3306/hive?createDatabaseIfNotExist=true"
+   elsif @hive_ms_rdbms == "postgres"
+     @jdbc_driver = "org.postgresql.Driver"
+     @jdbc_url = "jdbc:postgresql://@db/hive?createDatabaseIfNotExist=true"
+   end
  -%>
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
@@ -40,13 +47,13 @@
 <% if @is_metastore or @is_hs2 -%>
   <property>
     <name>javax.jdo.option.ConnectionDriverName</name>
-    <value>com.mysql.jdbc.Driver</value>
+    <value><%= @jdbc_driver%></value>
     <description>Driver class name for a JDBC metastore</description>
   </property>
 
   <property>
     <name>javax.jdo.option.ConnectionURL</name>
-    <value>jdbc:mysql://<%= @db %>:3306/hive?createDatabaseIfNotExist=true</value>
+    <value><%= @jdbc_url%></value>
     <description>JDBC connect string for a JDBC metastore</description>
   </property>
   

@@ -61,5 +61,17 @@ class hive_client {
       target => '/usr/share/java/mysql-connector-java.jar',
       require => Package["hive${package_version}"],
     }
+
+  } elsif $hive_ms_rdbms == "postgres" {
+
+    package { 'postgresql-jdbc':
+      ensure => installed,
+    }
+
+    file { "/usr/hdp/${hdp_version}/hive/lib/postgresql-jdbc3.jar":
+      ensure => 'link',
+      target => '/usr/share/java/postgresql-jdbc3.jar',
+      require => Package["hive${package_version}"],
+    }
   }
 }
